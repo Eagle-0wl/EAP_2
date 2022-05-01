@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView splashImageView;
     boolean splashloading = false;
 
-    private static final String url = "jdbc:mysql://192.168.0.178:3306/Cars";
+    private static final String url = "jdbc:mysql://127.0.0.1:3306/Cars";
     private static final String user = "EAP";
     private static final String pass = "!v+(Vq)Da#P5Aec";
 
@@ -140,11 +140,12 @@ public class MainActivity extends AppCompatActivity {
     private class DownloadTask extends AsyncTask<ArrayList<String>, Void, Object> {
         protected Object doInBackground(ArrayList<String>... args) {
             Log.i("MyApp", "Background thread starting");
-            arrayList = new ArrayList<>(Arrays.asList("Other2"));
+            arrayList = new ArrayList<>(Arrays.asList("Other"));
 
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection(url, user, pass);
+                //Connection con  = DriverManager.getConnection("jdbc:mysql://localhost/Cars" + "user=EAP&password=!v+(Vq)Da#P5Aec");
                 System.out.println("Databaseection success");
                 arrayList.add("Databaseection success");
                 //String result = "Database Connection Successful\n";
