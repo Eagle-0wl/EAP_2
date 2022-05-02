@@ -9,13 +9,27 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/testView"
-        android:hint="Select EV"
-        android:padding="12dp"
-        android:gravity="center_vertical"
+        android:id="@+id/evView"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
 
         android:background="@android:drawable/editbox_background"
-        />
+        android:gravity="center_vertical"
+        android:hint="Select EV"
+        android:padding="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/traditionalView"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
+        android:background="@android:drawable/editbox_background"
+        android:gravity="center_vertical"
+        android:hint="Select traditional car"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/evView"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

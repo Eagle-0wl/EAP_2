@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -39,15 +38,19 @@ public class MainActivity extends AppCompatActivity {
     private ImageView splashImageView;
     boolean splashloading = false;
 
-    private static final String url = "jdbc:mysql://127.0.0.1:3306/Cars";
+    private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB";
     private static final String user = "EAP";
     private static final String pass = "!v+(Vq)Da#P5Aec";
 
-    TextView textview;
-    ArrayList<String> arrayList;
-    Dialog dialog;
+    TextView evView;
+    TextView traditionalView;
+    Dialog dialogEv;
+    Dialog dialogTraditional;
+    ArrayList<String> arrayListEv;
+    ArrayList<String> arrayListTraditional;
 
-    @Override
+
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -62,32 +65,32 @@ public class MainActivity extends AppCompatActivity {
                 splashloading = false;
                 setContentView(R.layout.activity_main);
                 // assign variable
-                textview = findViewById(R.id.testView);
+                evView = findViewById(R.id.evView);
 
-                textview.setOnClickListener(new View.OnClickListener() {
+                evView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Initialize dialog
-                        dialog = new Dialog(MainActivity.this);
+                        dialogEv = new Dialog(MainActivity.this);
 
                         // set custom dialog
-                        dialog.setContentView(R.layout.dialog_searchable_spinner);
+                        dialogEv.setContentView(R.layout.searchable_spinner_ev);
 
                         // set custom height and width
-                        dialog.getWindow().setLayout(650, 800);
+                        dialogEv.getWindow().setLayout(650, 800);
 
                         // set transparent background
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        dialogEv.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         // show dialog
-                        dialog.show();
+                        dialogEv.show();
 
                         // Initialize and assign variable
-                        EditText editText = dialog.findViewById(R.id.edit_text);
-                        ListView listView = dialog.findViewById(R.id.list_view);
+                        EditText editText = dialogEv.findViewById(R.id.edit_text_ev);
+                        ListView listView = dialogEv.findViewById(R.id.list_view_ev);
 
                         // Initialize array adapter
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, arrayList);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, arrayListEv);
 
                         // set adapter
                         listView.setAdapter(adapter);
@@ -112,13 +115,74 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 // when item selected from list
-                                // set selected item on textView
-                                textview.setText(adapter.getItem(position));
+                                // set selected item on evView
+                                evView.setText(adapter.getItem(position));
 
-                                // Dismiss dialog
-                                dialog.dismiss();
+                                // Dismiss dialogEv
+                                dialogEv.dismiss();
                             }
                         });
+
+                    }
+                });
+
+                traditionalView = findViewById(R.id.traditionalView);
+                traditionalView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Initialize dialogTraditional
+                        dialogTraditional = new Dialog(MainActivity.this);
+
+                        // set custom dialogTraditional
+                        dialogTraditional.setContentView(R.layout.searchable_spinner_traditional);
+
+                        // set custom height and width
+                        dialogTraditional.getWindow().setLayout(650, 800);
+
+                        // set transparent background
+                        dialogTraditional.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                        // show dialog
+                        dialogTraditional.show();
+
+                        // Initialize and assign variable
+                        EditText editText = dialogTraditional.findViewById(R.id.edit_text_traditional);
+                        ListView listView = dialogTraditional.findViewById(R.id.list_view_traditional);
+
+                        // Initialize array adapter
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, arrayListTraditional);
+
+                        // set adapter
+                        listView.setAdapter(adapter);
+                        editText.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                adapter.getFilter().filter(s);
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
+
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                // when item selected from list
+                                // set selected item on traditionalView
+                                traditionalView.setText(adapter.getItem(position));
+
+                                // Dismiss dialog
+                                dialogTraditional.dismiss();
+                            }
+                        });
+
                     }
                 });
 
@@ -134,53 +198,36 @@ public class MainActivity extends AppCompatActivity {
 
         // Start a new thread that will download all the data
 
-        new DownloadTask().execute(arrayList);
+        new DownloadTask().execute(); //arrayListEv,arrayListTraditional
     }
 
     private class DownloadTask extends AsyncTask<ArrayList<String>, Void, Object> {
         protected Object doInBackground(ArrayList<String>... args) {
             Log.i("MyApp", "Background thread starting");
-            arrayList = new ArrayList<>(Arrays.asList("Other"));
-
+            arrayListEv = new ArrayList<>(Arrays.asList("Other"));
+            arrayListTraditional = new ArrayList<>(Arrays.asList("Other"));
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection(url, user, pass);
-                //Connection con  = DriverManager.getConnection("jdbc:mysql://localhost/Cars" + "user=EAP&password=!v+(Vq)Da#P5Aec");
-                System.out.println("Databaseection success");
-                arrayList.add("Databaseection success");
-                //String result = "Database Connection Successful\n";
+                System.out.println("Database connection success");
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery("select Name from ev");
                 ResultSetMetaData rsmd = rs.getMetaData();
-
                 while (rs.next()) {
-                    arrayList.add(rs.getString(1).toString() + "\n");
+                    arrayListEv.add(rs.getString(1).toString() + "\n");
                 }
-                //res = result;
+                rs = st.executeQuery("select Name from fuel_cars");
+                rsmd = rs.getMetaData();
+                while (rs.next()) {
+                    arrayListTraditional.add(rs.getString(1).toString() + "\n");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-                arrayList.add( e.toString());
+                arrayListEv.add( e.toString());
             }
-            return arrayList;
 
+            return arrayListEv;
 
-
-            //             This is where you would do all the work of downloading your data
-//            arrayList = new ArrayList<>(Arrays.asList("Other"));
-//            arrayList.add("Tesla Model S Plaid");
-//            arrayList.add("Tesla Model X");
-//            arrayList.add("Porsche Taycan Turbo S");
-//            arrayList.add("Tesla Model S Long Range");
-//            arrayList.add("Kia EV6 GT");
-//            arrayList.add("BMW i4 M50");
-//            arrayList.add("Audi e-tron S");
-//            arrayList.add("Hyundai IONIQ 5 Long Range AWD");
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            //return arrayList;
         }
 
         protected void onPostExecute(Object result) {

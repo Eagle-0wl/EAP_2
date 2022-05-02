@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/dariu/AndroidStudioProjects/EAP/app/src/main/res/layout/activity_main.xml" value="0.2695035460992908" />
+        <entry key="..\:/Users/dariu/AndroidStudioProjects/EAP/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/dariu/AndroidStudioProjects/EAP/app/src/main/res/layout/dialog_searchable_spinner.xml" value="0.37726449275362317" />
+        <entry key="..\:/Users/dariu/AndroidStudioProjects/EAP/app/src/main/res/layout/searchable_spinner_traditional.xml" value="0.3383152173913043" />
       </map>
     </option>
   </component>
