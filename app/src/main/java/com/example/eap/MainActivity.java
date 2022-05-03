@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Object data = null;
 
     private ImageView splashImageView;
-    boolean splashloading = false;
+    boolean splashLoading = false;
 
     private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB";
     private static final String user = "EAP";
@@ -44,10 +45,16 @@ public class MainActivity extends AppCompatActivity {
 
     TextView evView;
     TextView traditionalView;
+    TextView editTextElectricityPrice;
+    TextView editTextGasPrice;
+    String diesel="diesel";
+    boolean isDiesel=false;
     Dialog dialogEv;
     Dialog dialogTraditional;
     ArrayList<String> arrayListEv;
     ArrayList<String> arrayListTraditional;
+    ArrayList<String> arrayListFuelType;
+    float prices[] = new float[3];
 
 
         @Override
@@ -58,15 +65,15 @@ public class MainActivity extends AppCompatActivity {
         splashImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         splashImageView.setImageResource(R.drawable.loadscreenad);
         setContentView(splashImageView);
-        splashloading = true;
+        splashLoading = true;
         Handler h = new Handler();
         h.postDelayed(new Runnable() {
             public void run() {
-                splashloading = false;
+                splashLoading = false;
                 setContentView(R.layout.activity_main);
-                // assign variable
-                evView = findViewById(R.id.evView);
 
+                // assign variable
+                evView = findViewById(R.id.textViewEv);
                 evView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -126,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                traditionalView = findViewById(R.id.traditionalView);
+                traditionalView = findViewById(R.id.textViewTraditional);
                 traditionalView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -178,6 +185,19 @@ public class MainActivity extends AppCompatActivity {
                                 // set selected item on traditionalView
                                 traditionalView.setText(adapter.getItem(position));
 
+                                if (position>=1){
+                                    if (arrayListFuelType.get(position-1).equals(diesel)){
+                                        editTextGasPrice = findViewById(R.id.editTextGasPrice);
+                                        editTextGasPrice.setText(String.valueOf(prices[2]));
+                                        isDiesel=true;
+                                    }
+                                    else{
+                                        editTextGasPrice = findViewById(R.id.editTextGasPrice);
+                                        editTextGasPrice.setText(String.valueOf(prices[1]));
+                                        isDiesel=false;
+                                    }
+                                }
+
                                 // Dismiss dialog
                                 dialogTraditional.dismiss();
                             }
@@ -185,6 +205,9 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+
+                editTextElectricityPrice = findViewById(R.id.editTextElectricityPrice);
+                editTextElectricityPrice.setText(String.valueOf(prices[0]));
 
             }
         }, 1500);
@@ -206,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("MyApp", "Background thread starting");
             arrayListEv = new ArrayList<>(Arrays.asList("Other"));
             arrayListTraditional = new ArrayList<>(Arrays.asList("Other"));
+            arrayListFuelType =  new ArrayList<String>();
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection(url, user, pass);
@@ -214,16 +238,33 @@ public class MainActivity extends AppCompatActivity {
                 ResultSet rs = st.executeQuery("select Name from ev");
                 ResultSetMetaData rsmd = rs.getMetaData();
                 while (rs.next()) {
-                    arrayListEv.add(rs.getString(1).toString() + "\n");
+                    arrayListEv.add(rs.getString(1).toString());
                 }
                 rs = st.executeQuery("select Name from fuel_cars");
-                rsmd = rs.getMetaData();
                 while (rs.next()) {
-                    arrayListTraditional.add(rs.getString(1).toString() + "\n");
+                    arrayListTraditional.add(rs.getString(1).toString());
                 }
+                rs = st.executeQuery("select Fuel_type from fuel_cars");
+                while (rs.next()) {
+                    arrayListFuelType.add(rs.getString(1).toString());
+                }
+
+
+                rs = st.executeQuery("select electricity from prices");
+                rs.next();
+                prices[0]=rs.getFloat(1);
+
+                rs = st.executeQuery("select gasoline from prices");
+                rs.next();
+                prices[1]=rs.getFloat(1);
+
+                rs = st.executeQuery("select diesel from prices");
+                rs.next();
+                prices[2]=rs.getFloat(1);
+
             } catch (Exception e) {
                 e.printStackTrace();
-                arrayListEv.add( e.toString());
+                arrayListEv.add(e.toString());
             }
 
             return arrayListEv;
