@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 editTextFuelPrice.setText(String.valueOf(prices[1]));
 
                 editTextDistance = findViewById(R.id.editTextDistancePerMonth);
-
+                View checkBoxBusiness = findViewById(R.id.checkBoxBusiness);
                 btnCalculate = findViewById(R.id.buttonCalculate);
                 btnCalculate.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -266,26 +267,29 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                         else editTextDistance.setError(null);
-//                    if (editTextDistance.getText()=="\n"){
-                        editTextElectricityPrice.getText();
-                        //float electricityPrice = Float.valueOf(editTextElectricityPrice.getText().toString());
-                        //Toast.makeText(getApplicationContext(),String.valueOf(electricityPrice),Toast.LENGTH_SHORT).show();
-//                    }
+
 
                         float electricityPrice = Float.valueOf(editTextElectricityPrice.getText().toString());
                         float distance = Integer.valueOf(editTextDistance.getText().toString());
 
                         float fuelPrice = Float.valueOf(editTextFuelPrice.getText().toString());
 
-
-
                         float resultEv =  electricityPrice * efficiencyEv/1000 * distance;
                         float resultTraditional = fuelPrice * efficiencyTraditional/100 * distance;
 
                         int i = 0;
-                        while(resultEv * i + evPrice >= resultTraditional * i  +tradicionalPrice)
-                        {
-                            i++;
+                        boolean isChecked = ((CheckBox) findViewById(R.id.checkBoxBusiness)).isChecked();
+                        if (isChecked==false){
+                            while(resultEv * i + evPrice - subsidy[0] >= resultTraditional * i  +tradicionalPrice)
+                            {
+                                i++;
+                            }
+                        }
+                        else{
+                            while(resultEv * i + evPrice - subsidy[1] >= resultTraditional * i  +tradicionalPrice)
+                            {
+                                i++;
+                            }
                         }
 
                         Toast.makeText(getApplicationContext(),String.valueOf(i/12) + "years and " +String.valueOf(i%12) + "months",Toast.LENGTH_SHORT).show();
