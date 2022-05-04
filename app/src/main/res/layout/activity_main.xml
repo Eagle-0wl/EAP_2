@@ -11,7 +11,7 @@
     tools:layout_editor_absoluteY="-6dp">
 
     <TextView
-        android:id="@+id/textViewEv"
+        android:id="@+id/textViewEvList"
         android:layout_width="170dp"
         android:layout_height="56dp"
         android:background="@android:drawable/editbox_background"
@@ -23,7 +23,7 @@
         app:drawableRightCompat="@drawable/ic_baseline_arrow_drop_down_24" />
 
     <TextView
-        android:id="@+id/textViewTraditional"
+        android:id="@+id/textViewTraditionalCarList"
         android:layout_width="170dp"
         android:layout_height="56dp"
         android:background="@android:drawable/editbox_background"
@@ -31,7 +31,7 @@
         android:hint="@string/select_traditional_car"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewEv"
+        app:layout_constraintStart_toEndOf="@+id/textViewEvList"
         app:layout_constraintTop_toTopOf="parent"
         app:drawableRightCompat="@drawable/ic_baseline_arrow_drop_down_24" />
 
@@ -44,7 +44,7 @@
         android:drawableEnd="@drawable/ic_baseline_euro_24"
         android:ems="10"
         android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="@+id/textViewEv"
+        app:layout_constraintStart_toStartOf="@+id/textViewEvList"
         app:layout_constraintTop_toBottomOf="@+id/editTextEvPrice" />
 
     <TextView
@@ -81,7 +81,7 @@
         android:drawableEnd="@drawable/ic_baseline_euro_24"
         android:ems="10"
         android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="@+id/textViewTraditional"
+        app:layout_constraintStart_toStartOf="@+id/textViewTraditionalCarList"
         app:layout_constraintTop_toBottomOf="@+id/editTextTraditionalCarPrice" />
 
     <TextView
@@ -140,7 +140,7 @@
         android:drawableEnd="@drawable/ic_baseline_euro_24"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/textViewEv"
+        app:layout_constraintStart_toStartOf="@+id/textViewEvList"
         app:layout_constraintTop_toBottomOf="@+id/editTextEvEfficiency" />
 
     <EditText
@@ -152,7 +152,7 @@
         android:drawableEnd="@drawable/ic_baseline_euro_24"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/textViewTraditional"
+        app:layout_constraintStart_toStartOf="@+id/textViewTraditionalCarList"
         app:layout_constraintTop_toBottomOf="@+id/editTextPollution" />
 
     <TextView
@@ -199,8 +199,8 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="@+id/textViewTraditional"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTraditional" />
+        app:layout_constraintStart_toStartOf="@+id/textViewTraditionalCarList"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTraditionalCarList" />
 
     <TextView
         android:id="@+id/textViewTraditionalEfficiency"
@@ -218,8 +218,8 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/textViewEv"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEv" />
+        app:layout_constraintStart_toStartOf="@+id/textViewEvList"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEvList" />
 
     <TextView
         android:id="@+id/textViewEvEfficiency"

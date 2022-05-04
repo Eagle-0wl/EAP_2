@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String user = "AAAARQAAAEEAAABQ";
     private static final String pass = "IXYrKFZxKURhI1A1QWVj";
 
-    TextView evView;
-    TextView traditionalView;
+    TextView textViewEvList;
+    TextView textViewTraditionalCarList;
     TextView editTextElectricityPrice;
     TextView editTextFuelPrice;
     TextView editTextDistance;
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
                 setContentView(R.layout.activity_main);
-                evView = findViewById(R.id.textViewEv);
+                textViewEvList = findViewById(R.id.textViewEvList);
                 TextView editTextEvEfficiency = findViewById(R.id.editTextEvEfficiency);
                 View textViewEvEfficiency = findViewById(R.id.textViewEvEfficiency);
                 View textViewTraditionasEfficiency = findViewById(R.id.textViewTraditionalEfficiency);
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 editTextEvEfficiency.setVisibility(View.GONE);
                 textViewEvEfficiency.setVisibility(View.GONE);
 
-                evView.setOnClickListener(new View.OnClickListener() {
+                textViewEvList.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Initialize dialog
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 // when item selected from list
                                 // set selected item on evView
-                                evView.setText(adapter.getItem(position));
+                                textViewEvList.setText(adapter.getItem(position));
 
                                 if (position>=1){
                                     editTextEvPrice.setText(String.valueOf(arrayListEvPrice.get(position - 1)));
@@ -165,13 +165,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                traditionalView = findViewById(R.id.textViewTraditional);
+                textViewTraditionalCarList = findViewById(R.id.textViewTraditionalCarList);
                 editTextFuelPrice = findViewById(R.id.editTextGasPrice);
 
                 editTextTraditionalCarPrice = findViewById(R.id.editTextTraditionalCarPrice);
                 editTextEvPrice = findViewById(R.id.editTextEvPrice);
 
-                traditionalView.setOnClickListener(new View.OnClickListener() {
+                textViewTraditionalCarList.setOnClickListener(new View.OnClickListener() {
                 @Override
                     public void onClick(View v) {
                         // Initialize dialogTraditional
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 // when item selected from list
                                 // set selected item on traditionalView
-                                traditionalView.setText(adapter.getItem(position));
+                                textViewTraditionalCarList.setText(adapter.getItem(position));
 
                                 if (position>=1){
                                     editTextTraditionalCarPrice.setText(String.valueOf(arrayListTraditionalPrice.get(position - 1)));
@@ -269,17 +269,17 @@ public class MainActivity extends AppCompatActivity {
                 btnCalculate.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        if(TextUtils.isEmpty(evView.getText())) {
-                            evView.setError(getResources().getString(R.string.select_EV));
+                        if(TextUtils.isEmpty(textViewEvList.getText())) {
+                            textViewEvList.setError(getResources().getString(R.string.select_EV));
                             return;
                         }
-                        else evView.setError(null);
+                        else textViewEvList.setError(null);
 
-                        if(TextUtils.isEmpty(traditionalView.getText())) {
-                            traditionalView.setError(getResources().getString(R.string.select_traditional_car));
+                        if(TextUtils.isEmpty(textViewTraditionalCarList.getText())) {
+                            textViewTraditionalCarList.setError(getResources().getString(R.string.select_traditional_car));
                             return;
                         }
-                        else traditionalView.setError(null);
+                        else textViewTraditionalCarList.setError(null);
 
                         if(TextUtils.isEmpty(editTextEvEfficiency.getText())) {
                             editTextEvEfficiency.setError(getResources().getString(R.string.input_ev_efficiency));
