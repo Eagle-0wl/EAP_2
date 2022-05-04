@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -36,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog pd = null;
     private ImageView splashImageView;
 
-    private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB";
-    private static final String user = "EAP";
-    private static final String pass = "!v+(Vq)Da#P5Aec";
+    private static final String url = "amRiYzpteXNxbDovLzE5Mi4xNjguMC4xNzg6MzMwNi9FQVArQUY4LURC"; //"jdbc:mysql://192.168.0.178:3306/EAP_DB";
+    private static final String user = "AAAARQAAAEEAAABQ";
+    private static final String pass = "IXYrKFZxKURhI1A1QWVj";
 
     TextView evView;
     TextView traditionalView;
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     Button btnCalculate;
     Dialog dialogEv;
     Dialog dialogTraditional;
-
     ArrayList<String> arrayListEv;
     ArrayList<String> arrayListTraditional;
     ArrayList<String> arrayListFuelType;
@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
                 setContentView(R.layout.activity_main);
-
-                // assign variable
                 evView = findViewById(R.id.textViewEv);
                 TextView editTextEvEfficiency = findViewById(R.id.editTextEvEfficiency);
                 View textViewEvEfficiency = findViewById(R.id.textViewEvEfficiency);
@@ -87,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView editTextTraditionalCarEfficiency = findViewById(R.id.editTextTraditionalCarEfficiency);
                 View textViewPollution = findViewById(R.id.textViewPollution);
                 TextView editTextPollution = findViewById(R.id.editTextPollution);
-
+                //hidding elements
                 textViewPollution.setVisibility(View.GONE);
                 editTextPollution.setVisibility(View.GONE);
                 editTextTraditionalCarEfficiency.setVisibility(View.GONE);
@@ -149,10 +147,12 @@ public class MainActivity extends AppCompatActivity {
                                 if (position>=1){
                                     editTextEvPrice.setText(String.valueOf(arrayListEvPrice.get(position - 1)));
                                     editTextEvEfficiency.setText(String.valueOf(arrayListEfficiencyEv.get(position - 1)));
+                                    //hiding elemenets
                                     editTextEvEfficiency.setVisibility(View.GONE);
                                     textViewEvEfficiency.setVisibility(View.GONE);
                                 }
                                 else {
+                                    //showind elements
                                     editTextEvEfficiency.setVisibility(View.VISIBLE);
                                     textViewEvEfficiency.setVisibility(View.VISIBLE);
                                 }
@@ -226,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                                     editTextTraditionalCarPrice.setText(String.valueOf(arrayListTraditionalPrice.get(position - 1)));
                                     editTextPollution.setText(String.valueOf(arrayListC02.get(position - 1)));
                                     editTextTraditionalCarEfficiency.setText(String.valueOf(arrayListEfficiencyTraditional.get(position - 1)));
+                                    //hiding elements
                                     textViewPollution.setVisibility(View.GONE);
                                     editTextPollution.setVisibility(View.GONE);
                                     editTextTraditionalCarEfficiency.setVisibility(View.GONE);
@@ -241,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                                 else{
+                                    //showing elements
                                     textViewPollution.setVisibility(View.VISIBLE);
                                     editTextPollution.setVisibility(View.VISIBLE);
                                     editTextTraditionalCarEfficiency.setVisibility(View.VISIBLE);
@@ -396,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
             arrayListTraditionalPrice =  new ArrayList<Integer>();
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection(url, user, pass);
+                Connection con = DriverManager.getConnection(new String(Base64.decode(url, 0), "UTF-7"), new String(Base64.decode(user, 0), "UTF-32"), new String(Base64.decode(pass, 0), "UTF-8"));
                 System.out.println("Database connection success");
                 Statement st = con.createStatement();
 
