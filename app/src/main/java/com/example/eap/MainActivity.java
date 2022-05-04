@@ -24,23 +24,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog pd = null;
-    private Object data = null;
-
     private ImageView splashImageView;
-    boolean splashLoading = false;
 
     private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB";
     private static final String user = "EAP";
@@ -65,11 +59,10 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Integer> arrayListC02;
     ArrayList<Integer> arrayListEvPrice;
     ArrayList<Integer> arrayListTraditionalPrice;
-    float prices[] = new float[3];
-    int subsidy[] = new int[2];
+    final float[] prices = new float[3];
+    final int[] subsidy = new int[2];
     boolean isDiesel=false;
-    String diesel="diesel";
-
+    final String diesel="diesel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
         splashImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         splashImageView.setImageResource(R.drawable.loadscreenad);
         setContentView(splashImageView);
-        splashLoading = true;
+
         Handler h = new Handler();
         h.postDelayed(new Runnable() {
             public void run() {
-                splashLoading = false;
+
                 setContentView(R.layout.activity_main);
 
                 // assign variable
@@ -265,9 +258,8 @@ public class MainActivity extends AppCompatActivity {
                 editTextElectricityPrice = findViewById(R.id.editTextElectricityPrice);
                 editTextElectricityPrice.setText(String.valueOf(prices[0]));
                 editTextFuelPrice.setText(String.valueOf(prices[1]));
-
                 editTextDistance = findViewById(R.id.editTextDistancePerMonth);
-                View checkBoxBusiness = findViewById(R.id.checkBoxBusiness);
+
                 TextView textViewPaybackTime = findViewById(R.id.textViewPaybackTime);
                 TextView textViewCalculationDetails = findViewById(R.id.textViewCalculationDetails);
 
@@ -276,61 +268,61 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if(TextUtils.isEmpty(evView.getText())) {
-                            evView.setError("Input electricity price");
+                            evView.setError(getResources().getString(R.string.select_EV));
                             return;
                         }
                         else evView.setError(null);
 
                         if(TextUtils.isEmpty(traditionalView.getText())) {
-                            traditionalView.setError("Input electricity price");
+                            traditionalView.setError(getResources().getString(R.string.select_traditional_car));
                             return;
                         }
                         else traditionalView.setError(null);
 
                         if(TextUtils.isEmpty(editTextEvEfficiency.getText())) {
-                            editTextEvEfficiency.setError("Input electricity price");
+                            editTextEvEfficiency.setError(getResources().getString(R.string.input_ev_efficiency));
                             return;
                         }
                         else editTextEvEfficiency.setError(null);
 
                         if(TextUtils.isEmpty(editTextTraditionalCarEfficiency.getText())) {
-                            editTextTraditionalCarEfficiency.setError("Input electricity price");
+                            editTextTraditionalCarEfficiency.setError(getResources().getString(R.string.input_traditional_car_efficiency));
                             return;
                         }
                         else editTextTraditionalCarEfficiency.setError(null);
 
                         if(TextUtils.isEmpty(editTextPollution.getText())) {
-                            editTextPollution.setError("Input electricity price");
+                            editTextPollution.setError(getResources().getString(R.string.input_traditional_car_c02));
                             return;
                         }
                         else editTextPollution.setError(null);
 
                         if(TextUtils.isEmpty(editTextEvPrice.getText())) {
-                            editTextEvPrice.setError("Input EV price");
+                            editTextEvPrice.setError(getResources().getString(R.string.input_ev_price));
                             return;
                         }
                         else editTextEvPrice.setError(null);
 
                         if(TextUtils.isEmpty(editTextTraditionalCarPrice.getText())) {
-                            editTextTraditionalCarPrice.setError("Input traditional car price");
+                            editTextTraditionalCarPrice.setError(getResources().getString(R.string.input_traditional_car_price));
                             return;
                         }
                         else editTextTraditionalCarPrice.setError(null);
 
                         if(TextUtils.isEmpty(editTextElectricityPrice.getText())) {
-                            editTextElectricityPrice.setError("Input electricity price");
+                            editTextElectricityPrice.setError(getResources().getString(R.string.input_electricity_price));
                             return;
                         }
                         else editTextElectricityPrice.setError(null);
 
                         if(TextUtils.isEmpty(editTextFuelPrice.getText())) {
-                            editTextFuelPrice.setError("Input fuel price");
+                            editTextFuelPrice.setError(getResources().getString(R.string.input_fuel_price));
                             return;
                         }
                         else editTextFuelPrice.setError(null);
 
                         if(TextUtils.isEmpty(editTextDistance.getText())) {
-                            editTextDistance.setError("Input distance");
+                            editTextDistance.setError(getResources().getString(R.string.input_distance));
                             return;
                         }
                         else editTextDistance.setError(null);
@@ -358,24 +350,22 @@ public class MainActivity extends AppCompatActivity {
                         }
                         boolean isChecked = ((CheckBox) findViewById(R.id.checkBoxBusiness)).isChecked();
 
-                        DecimalFormat df = new DecimalFormat("#.##");
-                        df.setRoundingMode(RoundingMode.CEILING);
-
                         if (isChecked==false){
                             while(resultEv * i + evPrice - subsidy[0] >= resultTraditional * i  + tradicionalPrice + tax)
                             {
                                 i++;
                             }
-                            textViewCalculationDetails.setText("Subsidija elektromobiliui: " + String.valueOf( subsidy[0]) + "\nTaršos mokestis: " + String.valueOf(df.format(tax)) + "€\nPo atsipirkimo per mėnesį sutaupoma: " + String.valueOf(df.format(resultTraditional - resultEv))+"€");
+                           textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[0],tax,resultTraditional - resultEv));
+
                         }
                         else{
                             while(resultEv * i + evPrice - subsidy[1] >= resultTraditional * i  + tradicionalPrice + tax)
                             {
                                 i++;
                             }
-                            textViewCalculationDetails.setText("Subsidija elektromobiliui: " + String.valueOf( subsidy[1]) + "\nTaršos mokestis: " + String.valueOf(df.format(tax)) + "€\nPo atsipirkimo per mėnesį sutaupoma: " + String.valueOf(df.format(resultTraditional - resultEv))+"€");
+                            textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[1],tax,resultTraditional - resultEv));
                         }
-                        textViewPaybackTime.setText("Ev will payback in " + String.valueOf(i/12) + " years and " +String.valueOf(i%12) + " months");
+                        textViewPaybackTime.setText(getString(R.string.will_pay_back_in, i/12,i%12));
                     }
                 });
             }
@@ -383,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Show the ProgressDialog on this thread
 
-        this.pd = ProgressDialog.show(this, "", "Downloading DataBase...", true, false);
+        this.pd = ProgressDialog.show(this, "", getResources().getString(R.string.db_download), true, false);
         this.pd.getWindow().setGravity(Gravity.BOTTOM);
         this.pd.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         this.pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -396,8 +386,8 @@ public class MainActivity extends AppCompatActivity {
     private class DownloadTask extends AsyncTask<ArrayList<String>, Void, Object> {
         protected Object doInBackground(ArrayList<String>... args) {
             Log.i("MyApp", "Background thread starting");
-            arrayListEv = new ArrayList<>(Arrays.asList("Other Ev"));
-            arrayListTraditional = new ArrayList<>(Arrays.asList("Other traditional car"));
+            arrayListEv = new ArrayList<>(Arrays.asList(getResources().getString(R.string.other_ev)));
+            arrayListTraditional = new ArrayList<>(Arrays.asList(getResources().getString(R.string.other_car)));
             arrayListFuelType =  new ArrayList<String>();
             arrayListEfficiencyTraditional =  new ArrayList<Float>();
             arrayListEfficiencyEv =  new ArrayList<Integer>();
@@ -409,7 +399,6 @@ public class MainActivity extends AppCompatActivity {
                 Connection con = DriverManager.getConnection(url, user, pass);
                 System.out.println("Database connection success");
                 Statement st = con.createStatement();
-
 
                 ResultSet rs = st.executeQuery("select Name from ev");              //get EVs from db
                 while (rs.next()) {
@@ -476,11 +465,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return arrayListEv;
         }
-
         protected void onPostExecute(Object result) {
-            // Pass the result data back to the main activity
-            MainActivity.this.data = result;
-
             if (MainActivity.this.pd != null) {
                 MainActivity.this.pd.dismiss();
             }

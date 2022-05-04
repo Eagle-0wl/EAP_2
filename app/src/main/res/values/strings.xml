@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">EAP</string>
-</resources>
+    <string name="select_EV">Pasirinkite elektromobilį</string>
+    <string name="select_traditional_car">Pasirinkite tradicinį automobilį</string>
+    <string name="electricity_price">Elektros kaina</string>
+    <string name="distance">Nuvažiuojamas atstumas per mėnesį</string>
+    <string name="business">Juridinis asmuo</string>
+    <string name="fuel_price">Degalų kaina €</string>
+    <string name="calculate">Skaičiuoti</string>
+    <string name="ev_price">Elektromobilio kaina €</string>
+    <string name="car_price">Automobilio kaina €</string>
+    <string name="co2">CO2/km</string>
+    <string name="car_efficiency">Kuro sąnaudoso L/100km</string>
+    <string name="ev_efficiency">Elektros sąnaudos Wh/km</string>
+    <string name="search">Paiška</string>
+    <string name="db_download">"Atsisiunčiami duomenys"</string>
+    <string name="other_ev">"Kitas elektromobilis"</string>
+    <string name="other_car">"Kitas tradicinis automobilis"</string>
+    <string name="input_traditional_car_price">Įveskite tradicinio automobilio kainą</string>
+    <string name="input_ev_price">Įveskite elektromobilio kainą</string>
+    <string name="input_electricity_price">Įveskite elektros kainą</string>
+    <string name="input_fuel_price">Įveskite degalų kainą</string>
+    <string name="input_distance">Įveskite nuvažiuojamą atstumą per mėnesį</string>
+    <string name="input_ev_efficiency">Įveskite elektromobilio elektros sąnaudas</string>
+    <string name="input_traditional_car_efficiency">Įveskite tradicinio automobilio kuro sąnaudas</string>
+    <string name="input_traditional_car_c02">Įveskite tradicinio automobilio CO2</string>
+
+    <string name="calculation_detail">Subsidija elektromobiliui:  %1$d€ \nTaršos mokestis: %2$.2f€\nPo atsipirkimo per mėnesį sutaupoma: %3$.2f€</string>
+    <string name="will_pay_back_in">Elektromobilis atsipirks po %1$d metų ir %2$d mėnesių.</string>
+    </resources>

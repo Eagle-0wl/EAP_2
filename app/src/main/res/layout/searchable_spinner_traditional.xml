@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select traditional car"
+        android:text="@string/select_traditional_car"
         android:textSize="20sp"
         android:textStyle="bold"
         />
@@ -23,7 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit_text_traditional"
-        android:hint="Search..."
+        android:hint="@string/search"
+        android:inputType="text"
         android:padding="12dp"
         android:singleLine="true"
         android:layout_marginTop="8dp"

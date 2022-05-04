@@ -10,33 +10,33 @@
     tools:layout_editor_absoluteX="-28dp"
     tools:layout_editor_absoluteY="-6dp">
 
-
     <TextView
         android:id="@+id/textViewEv"
         android:layout_width="170dp"
         android:layout_height="56dp"
         android:background="@android:drawable/editbox_background"
-        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
         android:gravity="center_vertical"
-        android:hint="Select EV"
+        android:hint="@string/select_EV"
         android:padding="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:drawableRightCompat="@drawable/ic_baseline_arrow_drop_down_24" />
 
     <TextView
         android:id="@+id/textViewTraditional"
         android:layout_width="170dp"
         android:layout_height="56dp"
         android:background="@android:drawable/editbox_background"
-        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
         android:gravity="center_vertical"
-        android:hint="Select traditional car"
+        android:hint="@string/select_traditional_car"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewEv"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:drawableRightCompat="@drawable/ic_baseline_arrow_drop_down_24" />
 
     <EditText
+
         android:id="@+id/editTextElectricityPrice"
         android:layout_width="170dp"
         android:layout_height="56dp"
@@ -51,15 +51,15 @@
         android:id="@+id/textViewElectricityPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Electricity price €"
+        android:text="@string/electricity_price"
         app:layout_constraintStart_toStartOf="@+id/editTextElectricityPrice"
         app:layout_constraintTop_toBottomOf="@+id/editTextElectricityPrice" />
 
     <TextView
         android:id="@+id/textViewDistancePerMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Distance per Month (km)"
+        android:layout_width="170dp"
+        android:layout_height="32dp"
+        android:text="@string/distance"
         app:layout_constraintStart_toStartOf="@+id/editTextDistancePerMonth"
         app:layout_constraintTop_toBottomOf="@+id/editTextDistancePerMonth" />
 
@@ -67,12 +67,13 @@
         android:id="@+id/checkBoxBusiness"
         android:layout_width="90dp"
         android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:text="Business"
+        android:layout_marginTop="32dp"
+        android:text="@string/business"
         app:layout_constraintStart_toStartOf="@+id/editTextDistancePerMonth"
         app:layout_constraintTop_toTopOf="@+id/textViewDistancePerMonth" />
 
     <EditText
+
         android:id="@+id/editTextGasPrice"
         android:layout_width="170dp"
         android:layout_height="56dp"
@@ -87,11 +88,12 @@
         android:id="@+id/textViewGasPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fuel Price €"
+        android:text="@string/fuel_price"
         app:layout_constraintStart_toStartOf="@+id/editTextGasPrice"
         app:layout_constraintTop_toBottomOf="@+id/editTextGasPrice" />
 
     <EditText
+
         android:id="@+id/editTextDistancePerMonth"
         android:layout_width="170dp"
         android:layout_height="56dp"
@@ -106,7 +108,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="144dp"
-        android:text="Calculate"
+        android:text="@string/calculate"
+        android:textColor="@color/white"
         app:backgroundTint="@color/teal_700"
         app:layout_constraintEnd_toEndOf="@+id/editTextGasPrice"
         app:layout_constraintTop_toBottomOf="@+id/textViewGasPrice" />
@@ -130,6 +133,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewPaybackTime" />
 
     <EditText
+
         android:id="@+id/editTextEvPrice"
         android:layout_width="170dp"
         android:layout_height="56dp"
@@ -141,6 +145,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextEvEfficiency" />
 
     <EditText
+
         android:id="@+id/editTextTraditionalCarPrice"
         android:layout_width="170dp"
         android:layout_height="56dp"
@@ -155,7 +160,7 @@
         android:id="@+id/textViewEvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Electric car price €"
+        android:text="@string/ev_price"
 
         app:layout_constraintStart_toStartOf="@+id/editTextEvPrice"
         app:layout_constraintTop_toBottomOf="@+id/editTextEvPrice" />
@@ -164,11 +169,12 @@
         android:id="@+id/textViewTraditionalCarPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Traditional car price €"
+        android:text="@string/car_price"
         app:layout_constraintStart_toStartOf="@+id/editTextTraditionalCarPrice"
         app:layout_constraintTop_toBottomOf="@+id/editTextTraditionalCarPrice" />
 
     <EditText
+
         android:id="@+id/editTextPollution"
         android:layout_width="170dp"
         android:layout_height="56dp"
@@ -182,11 +188,12 @@
         android:id="@+id/textViewPollution"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CO2/km"
+        android:text="@string/co2"
         app:layout_constraintStart_toStartOf="@+id/editTextPollution"
         app:layout_constraintTop_toBottomOf="@+id/editTextPollution" />
 
     <EditText
+
         android:id="@+id/editTextTraditionalCarEfficiency"
         android:layout_width="170dp"
         android:layout_height="56dp"
@@ -200,11 +207,12 @@
         android:id="@+id/textViewTraditionalEfficiency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="L/100km"
+        android:text="@string/car_efficiency"
         app:layout_constraintStart_toStartOf="@+id/editTextTraditionalCarEfficiency"
         app:layout_constraintTop_toBottomOf="@+id/editTextTraditionalCarEfficiency" />
 
     <EditText
+
         android:id="@+id/editTextEvEfficiency"
         android:layout_width="170dp"
         android:layout_height="56dp"
@@ -218,7 +226,7 @@
         android:id="@+id/textViewEvEfficiency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wh/km"
+        android:text="@string/ev_efficiency"
         app:layout_constraintStart_toStartOf="@+id/editTextEvEfficiency"
         app:layout_constraintTop_toBottomOf="@+id/editTextEvEfficiency" />
 
