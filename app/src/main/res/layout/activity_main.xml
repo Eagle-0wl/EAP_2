@@ -40,11 +40,12 @@
         android:id="@+id/editTextElectricityPrice"
         android:layout_width="170dp"
         android:layout_height="56dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_baseline_euro_24"
         android:ems="10"
         android:inputType="numberDecimal"
         app:layout_constraintStart_toStartOf="@+id/textViewEv"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEv" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEvPrice" />
 
     <TextView
         android:id="@+id/textViewElectricityPrice"
@@ -58,7 +59,7 @@
         android:id="@+id/textViewDistancePerMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Distance per Month (KM)"
+        android:text="Distance per Month (km)"
         app:layout_constraintStart_toStartOf="@+id/editTextDistancePerMonth"
         app:layout_constraintTop_toBottomOf="@+id/editTextDistancePerMonth" />
 
@@ -66,18 +67,21 @@
         android:id="@+id/checkBoxBusiness"
         android:layout_width="90dp"
         android:layout_height="56dp"
+        android:layout_marginTop="16dp"
         android:text="Business"
-        app:layout_constraintEnd_toEndOf="@+id/editTextGasPrice"
-        app:layout_constraintTop_toTopOf="@+id/editTextDistancePerMonth" />
+        app:layout_constraintStart_toStartOf="@+id/editTextDistancePerMonth"
+        app:layout_constraintTop_toTopOf="@+id/textViewDistancePerMonth" />
 
     <EditText
         android:id="@+id/editTextGasPrice"
         android:layout_width="170dp"
         android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_baseline_euro_24"
         android:ems="10"
         android:inputType="numberDecimal"
         app:layout_constraintStart_toStartOf="@+id/textViewTraditional"
-        app:layout_constraintTop_toTopOf="@+id/editTextElectricityPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTraditionalCarPrice" />
 
     <TextView
         android:id="@+id/textViewGasPrice"
@@ -91,7 +95,7 @@
         android:id="@+id/editTextDistancePerMonth"
         android:layout_width="170dp"
         android:layout_height="56dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="@+id/editTextElectricityPrice"
@@ -101,10 +105,121 @@
         android:id="@+id/buttonCalculate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="144dp"
         android:text="Calculate"
         app:backgroundTint="@color/teal_700"
         app:layout_constraintEnd_toEndOf="@+id/editTextGasPrice"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxBusiness" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewGasPrice" />
+
+    <TextView
+        android:id="@+id/textViewPaybackTime"
+        android:layout_width="350dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="12dp"
+        android:text=""
+        app:layout_constraintStart_toStartOf="@+id/editTextDistancePerMonth"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCalculate" />
+
+    <TextView
+        android:id="@+id/textViewCalculationDetails"
+        android:layout_width="347dp"
+        android:layout_height="102dp"
+        android:layout_marginTop="12dp"
+        android:text=""
+        app:layout_constraintStart_toStartOf="@+id/textViewPaybackTime"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPaybackTime" />
+
+    <EditText
+        android:id="@+id/editTextEvPrice"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_baseline_euro_24"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/textViewEv"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEvEfficiency" />
+
+    <EditText
+        android:id="@+id/editTextTraditionalCarPrice"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_baseline_euro_24"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/textViewTraditional"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPollution" />
+
+    <TextView
+        android:id="@+id/textViewEvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Electric car price €"
+
+        app:layout_constraintStart_toStartOf="@+id/editTextEvPrice"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEvPrice" />
+
+    <TextView
+        android:id="@+id/textViewTraditionalCarPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Traditional car price €"
+        app:layout_constraintStart_toStartOf="@+id/editTextTraditionalCarPrice"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTraditionalCarPrice" />
+
+    <EditText
+        android:id="@+id/editTextPollution"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintStart_toStartOf="@+id/editTextTraditionalCarEfficiency"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTraditionalCarEfficiency" />
+
+    <TextView
+        android:id="@+id/textViewPollution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CO2/km"
+        app:layout_constraintStart_toStartOf="@+id/editTextPollution"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPollution" />
+
+    <EditText
+        android:id="@+id/editTextTraditionalCarEfficiency"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintStart_toStartOf="@+id/textViewTraditional"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTraditional" />
+
+    <TextView
+        android:id="@+id/textViewTraditionalEfficiency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="L/100km"
+        app:layout_constraintStart_toStartOf="@+id/editTextTraditionalCarEfficiency"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTraditionalCarEfficiency" />
+
+    <EditText
+        android:id="@+id/editTextEvEfficiency"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/textViewEv"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEv" />
+
+    <TextView
+        android:id="@+id/textViewEvEfficiency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wh/km"
+        app:layout_constraintStart_toStartOf="@+id/editTextEvEfficiency"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEvEfficiency" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

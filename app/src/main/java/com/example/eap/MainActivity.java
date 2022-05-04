@@ -24,12 +24,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -50,12 +51,12 @@ public class MainActivity extends AppCompatActivity {
     TextView editTextElectricityPrice;
     TextView editTextFuelPrice;
     TextView editTextDistance;
+    TextView editTextTraditionalCarPrice;
+    TextView editTextEvPrice;
     Button btnCalculate;
     Dialog dialogEv;
     Dialog dialogTraditional;
 
-    String diesel="diesel";
-    boolean isDiesel=false;
     ArrayList<String> arrayListEv;
     ArrayList<String> arrayListTraditional;
     ArrayList<String> arrayListFuelType;
@@ -65,14 +66,12 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Integer> arrayListEvPrice;
     ArrayList<Integer> arrayListTraditionalPrice;
     float prices[] = new float[3];
-    float efficiencyTraditional;
-    float efficiencyEv;
-    int co2;
-    int evPrice;
-    int tradicionalPrice;
     int subsidy[] = new int[2];
+    boolean isDiesel=false;
+    String diesel="diesel";
 
-        @Override
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -89,6 +88,20 @@ public class MainActivity extends AppCompatActivity {
 
                 // assign variable
                 evView = findViewById(R.id.textViewEv);
+                TextView editTextEvEfficiency = findViewById(R.id.editTextEvEfficiency);
+                View textViewEvEfficiency = findViewById(R.id.textViewEvEfficiency);
+                View textViewTraditionasEfficiency = findViewById(R.id.textViewTraditionalEfficiency);
+                TextView editTextTraditionalCarEfficiency = findViewById(R.id.editTextTraditionalCarEfficiency);
+                View textViewPollution = findViewById(R.id.textViewPollution);
+                TextView editTextPollution = findViewById(R.id.editTextPollution);
+
+                textViewPollution.setVisibility(View.GONE);
+                editTextPollution.setVisibility(View.GONE);
+                editTextTraditionalCarEfficiency.setVisibility(View.GONE);
+                textViewTraditionasEfficiency.setVisibility(View.GONE);
+                editTextEvEfficiency.setVisibility(View.GONE);
+                textViewEvEfficiency.setVisibility(View.GONE);
+
                 evView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -141,8 +154,14 @@ public class MainActivity extends AppCompatActivity {
                                 evView.setText(adapter.getItem(position));
 
                                 if (position>=1){
-                                    efficiencyEv = arrayListEfficiencyEv.get(position - 1);
-                                    evPrice = arrayListEvPrice.get(position - 1);
+                                    editTextEvPrice.setText(String.valueOf(arrayListEvPrice.get(position - 1)));
+                                    editTextEvEfficiency.setText(String.valueOf(arrayListEfficiencyEv.get(position - 1)));
+                                    editTextEvEfficiency.setVisibility(View.GONE);
+                                    textViewEvEfficiency.setVisibility(View.GONE);
+                                }
+                                else {
+                                    editTextEvEfficiency.setVisibility(View.VISIBLE);
+                                    textViewEvEfficiency.setVisibility(View.VISIBLE);
                                 }
 
                                 // Dismiss dialogEv
@@ -155,8 +174,12 @@ public class MainActivity extends AppCompatActivity {
 
                 traditionalView = findViewById(R.id.textViewTraditional);
                 editTextFuelPrice = findViewById(R.id.editTextGasPrice);
+
+                editTextTraditionalCarPrice = findViewById(R.id.editTextTraditionalCarPrice);
+                editTextEvPrice = findViewById(R.id.editTextEvPrice);
+
                 traditionalView.setOnClickListener(new View.OnClickListener() {
-                    @Override
+                @Override
                     public void onClick(View v) {
                         // Initialize dialogTraditional
                         dialogTraditional = new Dialog(MainActivity.this);
@@ -207,9 +230,14 @@ public class MainActivity extends AppCompatActivity {
                                 traditionalView.setText(adapter.getItem(position));
 
                                 if (position>=1){
-                                    efficiencyTraditional = arrayListEfficiencyTraditional.get(position - 1);
-                                    co2 = arrayListC02.get(position - 1);
-                                    tradicionalPrice = arrayListTraditionalPrice.get(position - 1);
+                                    editTextTraditionalCarPrice.setText(String.valueOf(arrayListTraditionalPrice.get(position - 1)));
+                                    editTextPollution.setText(String.valueOf(arrayListC02.get(position - 1)));
+                                    editTextTraditionalCarEfficiency.setText(String.valueOf(arrayListEfficiencyTraditional.get(position - 1)));
+                                    textViewPollution.setVisibility(View.GONE);
+                                    editTextPollution.setVisibility(View.GONE);
+                                    editTextTraditionalCarEfficiency.setVisibility(View.GONE);
+                                    textViewTraditionasEfficiency.setVisibility(View.GONE);
+
                                     if (arrayListFuelType.get(position-1).equals(diesel)){
                                         editTextFuelPrice.setText(String.valueOf(prices[2]));
                                         isDiesel=true;
@@ -218,6 +246,12 @@ public class MainActivity extends AppCompatActivity {
                                         editTextFuelPrice.setText(String.valueOf(prices[1]));
                                         isDiesel=false;
                                     }
+                                }
+                                else{
+                                    textViewPollution.setVisibility(View.VISIBLE);
+                                    editTextPollution.setVisibility(View.VISIBLE);
+                                    editTextTraditionalCarEfficiency.setVisibility(View.VISIBLE);
+                                    textViewTraditionasEfficiency.setVisibility(View.VISIBLE);
                                 }
 
                                 // Dismiss dialog
@@ -234,6 +268,9 @@ public class MainActivity extends AppCompatActivity {
 
                 editTextDistance = findViewById(R.id.editTextDistancePerMonth);
                 View checkBoxBusiness = findViewById(R.id.checkBoxBusiness);
+                TextView textViewPaybackTime = findViewById(R.id.textViewPaybackTime);
+                TextView textViewCalculationDetails = findViewById(R.id.textViewCalculationDetails);
+
                 btnCalculate = findViewById(R.id.buttonCalculate);
                 btnCalculate.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -249,6 +286,36 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                         else traditionalView.setError(null);
+
+                        if(TextUtils.isEmpty(editTextEvEfficiency.getText())) {
+                            editTextEvEfficiency.setError("Input electricity price");
+                            return;
+                        }
+                        else editTextEvEfficiency.setError(null);
+
+                        if(TextUtils.isEmpty(editTextTraditionalCarEfficiency.getText())) {
+                            editTextTraditionalCarEfficiency.setError("Input electricity price");
+                            return;
+                        }
+                        else editTextTraditionalCarEfficiency.setError(null);
+
+                        if(TextUtils.isEmpty(editTextPollution.getText())) {
+                            editTextPollution.setError("Input electricity price");
+                            return;
+                        }
+                        else editTextPollution.setError(null);
+
+                        if(TextUtils.isEmpty(editTextEvPrice.getText())) {
+                            editTextEvPrice.setError("Input EV price");
+                            return;
+                        }
+                        else editTextEvPrice.setError(null);
+
+                        if(TextUtils.isEmpty(editTextTraditionalCarPrice.getText())) {
+                            editTextTraditionalCarPrice.setError("Input traditional car price");
+                            return;
+                        }
+                        else editTextTraditionalCarPrice.setError(null);
 
                         if(TextUtils.isEmpty(editTextElectricityPrice.getText())) {
                             editTextElectricityPrice.setError("Input electricity price");
@@ -268,36 +335,49 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else editTextDistance.setError(null);
 
-
                         float electricityPrice = Float.valueOf(editTextElectricityPrice.getText().toString());
-                        float distance = Integer.valueOf(editTextDistance.getText().toString());
-
+                        int distance = Integer.valueOf(editTextDistance.getText().toString());
+                        int evPrice = Integer.valueOf(editTextEvPrice.getText().toString());
+                        int tradicionalPrice = Integer.valueOf(editTextTraditionalCarPrice.getText().toString());
+                        int efficiencyEv =  Integer.valueOf(editTextEvEfficiency.getText().toString());
+                        int co2 = Integer.valueOf(editTextPollution.getText().toString());
+                        float efficiencyTraditional = Float.valueOf(editTextTraditionalCarEfficiency.getText().toString());
+                        int i = 0;
+                        double tax = 0.0F;
+                        int currentCO2 = 130;
                         float fuelPrice = Float.valueOf(editTextFuelPrice.getText().toString());
-
                         float resultEv =  electricityPrice * efficiencyEv/1000 * distance;
                         float resultTraditional = fuelPrice * efficiencyTraditional/100 * distance;
 
-                        int i = 0;
+                        while (currentCO2<co2){
+                            currentCO2=currentCO2 + 10;
+                            tax = tax + 33.24F;
+                        }
+                        if (isDiesel==false){
+                            tax = tax / 2;
+                        }
                         boolean isChecked = ((CheckBox) findViewById(R.id.checkBoxBusiness)).isChecked();
+
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        df.setRoundingMode(RoundingMode.CEILING);
+
                         if (isChecked==false){
-                            while(resultEv * i + evPrice - subsidy[0] >= resultTraditional * i  +tradicionalPrice)
+                            while(resultEv * i + evPrice - subsidy[0] >= resultTraditional * i  + tradicionalPrice + tax)
                             {
                                 i++;
                             }
+                            textViewCalculationDetails.setText("Subsidija elektromobiliui: " + String.valueOf( subsidy[0]) + "\nTaršos mokestis: " + String.valueOf(df.format(tax)) + "€\nPo atsipirkimo per mėnesį sutaupoma: " + String.valueOf(df.format(resultTraditional - resultEv))+"€");
                         }
                         else{
-                            while(resultEv * i + evPrice - subsidy[1] >= resultTraditional * i  +tradicionalPrice)
+                            while(resultEv * i + evPrice - subsidy[1] >= resultTraditional * i  + tradicionalPrice + tax)
                             {
                                 i++;
                             }
+                            textViewCalculationDetails.setText("Subsidija elektromobiliui: " + String.valueOf( subsidy[1]) + "\nTaršos mokestis: " + String.valueOf(df.format(tax)) + "€\nPo atsipirkimo per mėnesį sutaupoma: " + String.valueOf(df.format(resultTraditional - resultEv))+"€");
                         }
-
-                        Toast.makeText(getApplicationContext(),String.valueOf(i/12) + "years and " +String.valueOf(i%12) + "months",Toast.LENGTH_SHORT).show();
-
+                        textViewPaybackTime.setText("Ev will payback in " + String.valueOf(i/12) + " years and " +String.valueOf(i%12) + " months");
                     }
-                }
-
-                );
+                });
             }
         }, 1500);
 
@@ -316,8 +396,8 @@ public class MainActivity extends AppCompatActivity {
     private class DownloadTask extends AsyncTask<ArrayList<String>, Void, Object> {
         protected Object doInBackground(ArrayList<String>... args) {
             Log.i("MyApp", "Background thread starting");
-            arrayListEv = new ArrayList<>(Arrays.asList("Other"));
-            arrayListTraditional = new ArrayList<>(Arrays.asList("Other"));
+            arrayListEv = new ArrayList<>(Arrays.asList("Other Ev"));
+            arrayListTraditional = new ArrayList<>(Arrays.asList("Other traditional car"));
             arrayListFuelType =  new ArrayList<String>();
             arrayListEfficiencyTraditional =  new ArrayList<Float>();
             arrayListEfficiencyEv =  new ArrayList<Integer>();
@@ -394,9 +474,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
                 arrayListEv.add(e.toString());
             }
-
             return arrayListEv;
-
         }
 
         protected void onPostExecute(Object result) {
