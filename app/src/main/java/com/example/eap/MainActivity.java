@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Float> arrayListEfficiencyTraditional;
     ArrayList<Integer> arrayListEfficiencyEv;
     ArrayList<Integer> arrayListC02;
-    ArrayList<Integer> arrayListEvPrice;
-    ArrayList<Integer> arrayListTraditionalPrice;
+    ArrayList<Float> arrayListEvPrice;
+    ArrayList<Float> arrayListTraditionalPrice;
     final float[] prices = new float[3];
     final int[] subsidy = new int[2];
     boolean isDiesel=false;
@@ -334,8 +334,8 @@ public class MainActivity extends AppCompatActivity {
 
                         float electricityPrice = Float.valueOf(editTextElectricityPrice.getText().toString());
                         int distance = Integer.valueOf(editTextDistance.getText().toString());
-                        int evPrice = Integer.valueOf(editTextEvPrice.getText().toString());
-                        int tradicionalPrice = Integer.valueOf(editTextTraditionalCarPrice.getText().toString());
+                        float evPrice = Float.valueOf(editTextEvPrice.getText().toString());
+                        float tradicionalPrice = Float.valueOf(editTextTraditionalCarPrice.getText().toString());
                         int efficiencyEv =  Integer.valueOf(editTextEvEfficiency.getText().toString());
                         int co2 = Integer.valueOf(editTextPollution.getText().toString());
                         float efficiencyTraditional = Float.valueOf(editTextTraditionalCarEfficiency.getText().toString());
@@ -396,51 +396,51 @@ public class MainActivity extends AppCompatActivity {
             arrayListEfficiencyTraditional =  new ArrayList<Float>();
             arrayListEfficiencyEv =  new ArrayList<Integer>();
             arrayListC02 =  new ArrayList<Integer>();
-            arrayListEvPrice =  new ArrayList<Integer>();
-            arrayListTraditionalPrice =  new ArrayList<Integer>();
+            arrayListEvPrice =  new ArrayList<Float>();
+            arrayListTraditionalPrice =  new ArrayList<Float>();
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection(new String(Base64.decode(url, 0), "UTF-7"), new String(Base64.decode(user, 0), "UTF-32"), new String(Base64.decode(pass, 0), "UTF-8"));
                 System.out.println("Database connection success");
                 Statement st = con.createStatement();
 
-                ResultSet rs = st.executeQuery("select Name from ev");              //get EVs from db
+                ResultSet rs = st.executeQuery("select Name from Electric_cars");              //get EVs from db
                 while (rs.next()) {
                     arrayListEv.add(rs.getString(1).toString());
                 }
-                rs = st.executeQuery("select Name from fuel_cars");                 //get fuel_cars from db
+                rs = st.executeQuery("select Name from Traditional_cars");                 //get fuel_cars from db
                 while (rs.next()) {
                     arrayListTraditional.add(rs.getString(1).toString());
                 }
 
-                rs = st.executeQuery("select Efficiency from fuel_cars");           //get efficiency of fuel_cars from db
+                rs = st.executeQuery("select Fuel_consumption from Traditional_cars");           //get efficiency of fuel_cars from db
                 while (rs.next()) {
                     arrayListEfficiencyTraditional.add(rs.getFloat(1));
                 }
 
-                rs = st.executeQuery("select Fuel_type from fuel_cars");           //get Fuel_type of fuel_cars from db
+                rs = st.executeQuery("select Fuel_type from Traditional_cars");           //get Fuel_type of fuel_cars from db
                 while (rs.next()) {
                     arrayListFuelType.add(rs.getString(1).toString());
                 }
 
-                rs = st.executeQuery("select Efficiency from ev");                  //get EVs efficiency from db
+                rs = st.executeQuery("select Energy_consumption from Electric_cars");                  //get EVs efficiency from db
                 while (rs.next()) {
                     arrayListEfficiencyEv.add(rs.getInt(1));
                 }
 
-                rs = st.executeQuery("select Pollution from fuel_cars");                  //get EVs efficiency from db
+                rs = st.executeQuery("select Pollution from Traditional_cars");                  //get EVs efficiency from db
                 while (rs.next()) {
                     arrayListC02.add(rs.getInt(1));
                 }
 
-                rs = st.executeQuery("select Price from ev");                  //get EVs price from db
+                rs = st.executeQuery("select Price from Electric_cars");                  //get EVs price from db
                 while (rs.next()) {
-                    arrayListEvPrice.add(rs.getInt(1));
+                    arrayListEvPrice.add(rs.getFloat(1));
                 }
 
-                rs = st.executeQuery("select Price from fuel_cars");                  //get tradicional cars price from db
+                rs = st.executeQuery("select Price from Traditional_cars");                  //get tradicional cars price from db
                 while (rs.next()) {
-                    arrayListTraditionalPrice.add(rs.getInt(1));
+                    arrayListTraditionalPrice.add(rs.getFloat(1));
                 }
 
                 rs = st.executeQuery("select electricity from prices");

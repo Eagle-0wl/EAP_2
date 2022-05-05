@@ -140,7 +140,7 @@
         android:layout_marginTop="16dp"
         android:drawableEnd="@drawable/ic_baseline_euro_24"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         app:layout_constraintStart_toStartOf="@+id/textViewEvList"
         app:layout_constraintTop_toBottomOf="@+id/editTextEvEfficiency" />
 
@@ -152,7 +152,7 @@
         android:layout_marginTop="16dp"
         android:drawableEnd="@drawable/ic_baseline_euro_24"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         app:layout_constraintStart_toStartOf="@+id/textViewTraditionalCarList"
         app:layout_constraintTop_toBottomOf="@+id/editTextPollution" />
 
