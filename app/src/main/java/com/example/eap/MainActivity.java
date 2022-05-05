@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         splashImageView = new ImageView(this);
-        splashImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        splashImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         splashImageView.setImageResource(R.drawable.loadscreenad);
         setContentView(splashImageView);
 
