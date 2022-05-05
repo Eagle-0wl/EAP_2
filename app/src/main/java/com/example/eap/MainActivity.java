@@ -26,6 +26,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     final int[] subsidy = new int[2];
     boolean isDiesel=false;
     final String diesel="diesel";
+    boolean error = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,11 @@ public class MainActivity extends AppCompatActivity {
         Handler h = new Handler();
         h.postDelayed(new Runnable() {
             public void run() {
-
+                if (error == true ){
+                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.error),Toast.LENGTH_LONG).show();
+                    finishAffinity();
+                    System.exit(0);
+                }
                 setContentView(R.layout.activity_main);
                 textViewEvList = findViewById(R.id.textViewEvList);
                 TextView editTextEvEfficiency = findViewById(R.id.editTextEvEfficiency);
@@ -384,7 +391,8 @@ public class MainActivity extends AppCompatActivity {
         this.pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // Start a new thread that will download all the data
 
-        new DownloadTask().execute(); //arrayListEv,arrayListTraditional
+        new DownloadTask().execute();
+
     }
 
     private class DownloadTask extends AsyncTask<ArrayList<String>, Void, Object> {
@@ -465,9 +473,9 @@ public class MainActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                arrayListEv.add(e.toString());
+                error = true;
             }
-            return arrayListEv;
+            return null;
         }
         protected void onPostExecute(Object result) {
             if (MainActivity.this.pd != null) {
