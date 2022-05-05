@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -379,7 +382,6 @@ public class MainActivity extends AppCompatActivity {
         this.pd.getWindow().setGravity(Gravity.BOTTOM);
         this.pd.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         this.pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         // Start a new thread that will download all the data
 
         new DownloadTask().execute(); //arrayListEv,arrayListTraditional
