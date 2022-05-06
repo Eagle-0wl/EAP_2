@@ -3,7 +3,7 @@
     <string name="select_EV">Pasirinkite elektromobilį</string>
     <string name="select_traditional_car">Pasirinkite tradicinį automobilį</string>
     <string name="electricity_price">Elektros kaina</string>
-    <string name="distance">Nuvažiuojamas atstumas per mėnesį</string>
+    <string name="distance">Nuvažiuojamas atstumas per mėnesį (Km)</string>
     <string name="business">Juridinis asmuo</string>
     <string name="fuel_price">Degalų kaina €</string>
     <string name="calculate">Skaičiuoti</string>
