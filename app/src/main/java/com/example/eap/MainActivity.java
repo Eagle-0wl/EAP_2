@@ -339,6 +339,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else editTextDistance.setError(null);
 
+                        int i = 0;
+                        double tax = 0.0F;
+                        int currentCO2 = 130;
                         float electricityPrice = Float.valueOf(editTextElectricityPrice.getText().toString());
                         int distance = Integer.valueOf(editTextDistance.getText().toString());
                         float evPrice = Float.valueOf(editTextEvPrice.getText().toString());
@@ -346,9 +349,6 @@ public class MainActivity extends AppCompatActivity {
                         int efficiencyEv =  Integer.valueOf(editTextEvEfficiency.getText().toString());
                         int co2 = Integer.valueOf(editTextPollution.getText().toString());
                         float efficiencyTraditional = Float.valueOf(editTextTraditionalCarEfficiency.getText().toString());
-                        int i = 0;
-                        double tax = 0.0F;
-                        int currentCO2 = 130;
                         float fuelPrice = Float.valueOf(editTextFuelPrice.getText().toString());
                         float resultEv =  electricityPrice * efficiencyEv/1000 * distance;
                         float resultTraditional = fuelPrice * efficiencyTraditional/100 * distance;
