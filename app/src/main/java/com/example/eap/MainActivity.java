@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
                         float resultTraditional = fuelPrice * efficiencyTraditional/100 * distance;
 
                         while (currentCO2<co2){
-                            currentCO2=currentCO2 + 10;
+                            co2 = co2 - 10;
                             tax = tax + 33.24F;
                         }
                         if (isDiesel==false){
@@ -363,19 +363,18 @@ public class MainActivity extends AppCompatActivity {
                         boolean isChecked = ((CheckBox) findViewById(R.id.checkBoxBusiness)).isChecked();
 
                         if (isChecked==false){
-                            while(resultEv * i + evPrice - subsidy[0] >= resultTraditional * i  + tradicionalPrice + tax)
+                            while(evPrice - tradicionalPrice - subsidy[0] - tax - (resultTraditional - resultEv )* i > 0)
                             {
                                 i++;
                             }
-                           textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[0],tax,resultTraditional - resultEv));
-
+                            textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[0],tax,resultTraditional - resultEv));
                         }
                         else{
-                            while(resultEv * i + evPrice - subsidy[1] >= resultTraditional * i  + tradicionalPrice + tax)
+                            while(evPrice - tradicionalPrice - subsidy[1] - tax - (resultTraditional - resultEv )* i > 0)
                             {
                                 i++;
                             }
-                            textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[1],tax,resultTraditional - resultEv));
+                            textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[0],tax,resultTraditional - resultEv));
                         }
                         textViewPaybackTime.setText(getString(R.string.will_pay_back_in, i/12,i%12));
                     }
