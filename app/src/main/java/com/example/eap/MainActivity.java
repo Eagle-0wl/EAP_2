@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog pd = null;
     private ImageView splashImageView;
 
-    private static final String url = "amRiYzpteXNxbDovLzE5Mi4xNjguMC4xNzg6MzMwNi9FQVArQUY4LURC"; //"jdbc:mysql://192.168.0.178:3306/EAP_DB";
+    private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB";
     private static final String user = "AAAARQAAAEEAAABQ";
     private static final String pass = "IXYrKFZxKURhI1A1QWVj";
 
@@ -374,13 +374,13 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 i++;
                             }
-                            textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[0],tax,resultTraditional - resultEv));
+                            textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[1],tax,resultTraditional - resultEv));
                         }
                         textViewPaybackTime.setText(getString(R.string.will_pay_back_in, i/12,i%12));
                     }
                 });
             }
-        }, 1500);
+        }, 1000);
 
         // Show the ProgressDialog on this thread
 
@@ -407,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
             arrayListTraditionalPrice =  new ArrayList<Float>();
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection(new String(Base64.decode(url, 0), "UTF-7"), new String(Base64.decode(user, 0), "UTF-32"), new String(Base64.decode(pass, 0), "UTF-8"));
+                Connection con = DriverManager.getConnection(url, new String(Base64.decode(user, 0), "UTF-32"), new String(Base64.decode(pass, 0), "UTF-8"));
                 System.out.println("Database connection success");
                 Statement st = con.createStatement();
 
