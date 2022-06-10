@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView splashImageView;
 
     private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB";
-    private static final String user = "AAAARQAAAEEAAABQ";
-    private static final String pass = "IXYrKFZxKURhI1A1QWVj";
+    private static final String user = "EAP";
+    private static final String pass = "-fb1(2zrtSP7/78hP]_-/x@gRP@hvP@u";
 
     TextView textViewEvList;
     TextView textViewTraditionalCarList;
@@ -407,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
             arrayListTraditionalPrice =  new ArrayList<Float>();
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection(url, new String(Base64.decode(user, 0), "UTF-32"), new String(Base64.decode(pass, 0), "UTF-8"));
+                Connection con = DriverManager.getConnection(url, user, pass);
                 System.out.println("Database connection success");
                 Statement st = con.createStatement();
 
