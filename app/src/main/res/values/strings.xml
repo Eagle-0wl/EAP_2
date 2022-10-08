@@ -26,5 +26,8 @@
     <string name="input_traditional_car_c02">Įveskite tradicinio automobilio CO2</string>
     <string name="error">Nepavyko prisijungti prie duomenų bazės, patikrinkite ryšį</string>
     <string name="calculation_detail">Subsidija elektromobiliui:  %1$d€ \nTaršos mokestis: %2$.2f€\nPo atsipirkimo per mėnesį sutaupoma: %3$.2f€</string>
+    <string name="will_not_pay_back">Esant tokioms elektros ir degalų kainoms elektromobilis neatsipirks</string>
     <string name="will_pay_back_in">Elektromobilis atsipirks po %1$d metų ir %2$d mėnesių.</string>
+    <string name="subsidy">Pasirinkite subsidiją</string>
+    <string name="solar_panels">Pasirinkite saulės elektrinę</string>
     </resources>

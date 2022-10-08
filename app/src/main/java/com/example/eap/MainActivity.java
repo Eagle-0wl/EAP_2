@@ -1,45 +1,46 @@
 package com.example.eap;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.InputStream;
-import java.net.URL;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ProgressDialog pd = null;
+    //private ProgressDialog pd = null;
     private ImageView splashImageView;
 
     private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB";
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     TextView editTextDistance;
     TextView editTextTraditionalCarPrice;
     TextView editTextEvPrice;
+    Spinner spinnerSubsidy;
+    Spinner spinnerSolarPanels;
+
     Button btnCalculate;
     Dialog dialogEv;
     Dialog dialogTraditional;
@@ -64,11 +68,18 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Integer> arrayListC02;
     ArrayList<Float> arrayListEvPrice;
     ArrayList<Float> arrayListTraditionalPrice;
-    final float[] prices = new float[3];
-    final int[] subsidy = new int[2];
+    float[] prices = new float[3];
+    //int[] subsidy = new int[2];
     boolean isDiesel=false;
     final String diesel="diesel";
     boolean error = false;
+    String dbUpdate;
+
+    ArrayList<String> subsidyList;
+    ArrayList<Integer> subsidySize;
+    ArrayList<String> solarPanelList;
+    ArrayList<Integer> solarPanleSize;
+    ArrayList<Integer> solarPanlePrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +192,8 @@ public class MainActivity extends AppCompatActivity {
                 editTextTraditionalCarPrice = findViewById(R.id.editTextTraditionalCarPrice);
                 editTextEvPrice = findViewById(R.id.editTextEvPrice);
 
+
+
                 textViewTraditionalCarList.setOnClickListener(new View.OnClickListener() {
                 @Override
                     public void onClick(View v) {
@@ -267,6 +280,39 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                SharedPreferences sharedPref = getSharedPreferences("EAP", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                Gson gson = new Gson();
+                String json;
+                json = sharedPref.getString("dbUpdate", null);
+                dbUpdate = gson.fromJson(json, String.class);
+
+                if (dbUpdate == null ){
+                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.error),Toast.LENGTH_LONG).show();
+                    finishAffinity();
+                    System.exit(0);
+                }
+
+
+                //json = sharedPref.getString("prices", null);
+                arrayListEv = gson.fromJson(sharedPref.getString("arrayListEv", null), new TypeToken<ArrayList<String>>() {}.getType());
+                arrayListTraditional = gson.fromJson(sharedPref.getString("arrayListTraditional", null),new TypeToken<ArrayList<String>>() {}.getType());
+                arrayListEfficiencyTraditional = gson.fromJson(sharedPref.getString("arrayListEfficiencyTraditional", null), new TypeToken<ArrayList<Float>>() {}.getType());
+                arrayListFuelType = gson.fromJson(sharedPref.getString("arrayListFuelType", null), new TypeToken<ArrayList<String>>() {}.getType());
+                arrayListEfficiencyEv = gson.fromJson(sharedPref.getString("arrayListEfficiencyEv", null), new TypeToken<ArrayList<Integer>>() {}.getType());
+                arrayListC02 = gson.fromJson(sharedPref.getString("arrayListC02", null),  new TypeToken<ArrayList<Integer>>() {}.getType());
+                arrayListEvPrice = gson.fromJson(sharedPref.getString("arrayListEvPrice", null), new TypeToken<ArrayList<Float>>() {}.getType());
+                arrayListTraditionalPrice = gson.fromJson(sharedPref.getString("arrayListTraditionalPrice", null),  new TypeToken<ArrayList<Float>>() {}.getType());
+                prices = gson.fromJson(sharedPref.getString("prices", null), float[].class);
+                //subsidy = gson.fromJson(sharedPref.getString("subsidy", null), int[].class);
+
+                subsidyList = gson.fromJson(sharedPref.getString("subsidyList", null),  new TypeToken<ArrayList<String>>() {}.getType());
+                subsidySize = gson.fromJson(sharedPref.getString("subsidySize", null),  new TypeToken<ArrayList<Integer>>() {}.getType());
+                solarPanelList = gson.fromJson(sharedPref.getString("solarPanelList", null),  new TypeToken<ArrayList<String>>() {}.getType());
+                solarPanleSize = gson.fromJson(sharedPref.getString("solarPanleSize", null),  new TypeToken<ArrayList<Integer>>() {}.getType());
+                solarPanlePrice = gson.fromJson(sharedPref.getString("solarPanlePrice", null),  new TypeToken<ArrayList<Integer>>() {}.getType());
+
+
                 editTextElectricityPrice = findViewById(R.id.editTextElectricityPrice);
                 editTextElectricityPrice.setText(String.valueOf(prices[0]));
                 editTextFuelPrice.setText(String.valueOf(prices[1]));
@@ -275,10 +321,25 @@ public class MainActivity extends AppCompatActivity {
                 TextView textViewPaybackTime = findViewById(R.id.textViewPaybackTime);
                 TextView textViewCalculationDetails = findViewById(R.id.textViewCalculationDetails);
 
+
+                Spinner spinnerSubsidy = (Spinner) findViewById(R.id.spinnerSubsidy);
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, subsidyList);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerSubsidy.setAdapter(dataAdapter);
+
+                Spinner spinnerSolarPanels = (Spinner) findViewById(R.id.spinnerSolarPanels);
+                dataAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, solarPanelList);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerSolarPanels.setAdapter(dataAdapter);
+
                 btnCalculate = findViewById(R.id.buttonCalculate);
                 btnCalculate.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
+                        try {
+                            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                        } catch (Exception e) {}
                         if(TextUtils.isEmpty(textViewEvList.getText())) {
                             textViewEvList.setError(getResources().getString(R.string.select_EV));
                             return;
@@ -353,6 +414,16 @@ public class MainActivity extends AppCompatActivity {
                         float resultEv =  electricityPrice * efficiencyEv/1000 * distance;
                         float resultTraditional = fuelPrice * efficiencyTraditional/100 * distance;
 
+
+                        solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()); //kilovatvalandes
+                        solarPanlePrice.get(spinnerSolarPanels.getSelectedItemPosition()); //saules elektriniu kaina.
+
+                        if (electricityPrice * efficiencyEv/1000 >= fuelPrice * efficiencyTraditional/100){
+                            textViewPaybackTime.setText(getString(R.string.will_not_pay_back));
+                            textViewCalculationDetails.setText(null);
+                            return;
+                        }
+
                         while (currentCO2<co2){
                             co2 = co2 - 10;
                             tax = tax + 33.24F;
@@ -360,23 +431,14 @@ public class MainActivity extends AppCompatActivity {
                         if (isDiesel==false){
                             tax = tax / 2;
                         }
-                        boolean isChecked = ((CheckBox) findViewById(R.id.checkBoxBusiness)).isChecked();
+                        boolean isChecked = false;//((CheckBox) findViewById(R.id.checkBoxBusiness)).isChecked();
 
-                        if (isChecked==false){
-                            while(evPrice - tradicionalPrice - subsidy[0] - tax - (resultTraditional - resultEv )* i > 0)
+                        while(evPrice - tradicionalPrice - subsidySize.get(spinnerSubsidy.getSelectedItemPosition()) - tax - (resultTraditional - resultEv )* i > 0)
                             {
                                 i++;
                             }
-                            textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[0],tax,resultTraditional - resultEv));
-                        }
-                        else{
-                            while(evPrice - tradicionalPrice - subsidy[1] - tax - (resultTraditional - resultEv )* i > 0)
-                            {
-                                i++;
-                            }
-                            textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidy[1],tax,resultTraditional - resultEv));
-                        }
-                        textViewPaybackTime.setText(getString(R.string.will_pay_back_in, i/12,i%12));
+                            textViewCalculationDetails.setText(getString(R.string.calculation_detail,  subsidySize.get(spinnerSubsidy.getSelectedItemPosition()),tax,resultTraditional - resultEv));
+                        textViewPaybackTime.setText(getString(R.string.will_pay_back_in,i/12,i%12));
                     }
                 });
             }
@@ -384,34 +446,59 @@ public class MainActivity extends AppCompatActivity {
 
         // Show the ProgressDialog on this thread
 
-        this.pd = ProgressDialog.show(this, "", getResources().getString(R.string.db_download), true, false);
+        /*this.pd = ProgressDialog.show(this, "", getResources().getString(R.string.db_download), true, false);
         this.pd.getWindow().setGravity(Gravity.BOTTOM);
         this.pd.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         this.pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        */
         // Start a new thread that will download all the data
 
         new DownloadTask().execute();
-
     }
-
     private class DownloadTask extends AsyncTask<ArrayList<String>, Void, Object> {
         protected Object doInBackground(ArrayList<String>... args) {
             Log.i("MyApp", "Background thread starting");
-            arrayListEv = new ArrayList<>(Arrays.asList(getResources().getString(R.string.other_ev)));
-            arrayListTraditional = new ArrayList<>(Arrays.asList(getResources().getString(R.string.other_car)));
+
             arrayListFuelType =  new ArrayList<String>();
             arrayListEfficiencyTraditional =  new ArrayList<Float>();
             arrayListEfficiencyEv =  new ArrayList<Integer>();
             arrayListC02 =  new ArrayList<Integer>();
             arrayListEvPrice =  new ArrayList<Float>();
             arrayListTraditionalPrice =  new ArrayList<Float>();
+
+            subsidyList = new ArrayList<String>();
+            subsidySize = new ArrayList<Integer>();
+            solarPanelList =  new ArrayList<String>();
+            solarPanleSize = new ArrayList<Integer>();
+            solarPanlePrice= new ArrayList<Integer>();
+
+
+            SharedPreferences sharedPref = getSharedPreferences("EAP", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Gson gson = new Gson();
+            String json;
+
             try {
+
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection(url, user, pass);
+
                 System.out.println("Database connection success");
                 Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery("SELECT last_update FROM mysql.innodb_table_stats order by last_update desc limit 1");
+                rs.next();
+                dbUpdate = gson.fromJson(sharedPref.getString("dbUpdate", null), String.class);
+                if (dbUpdate == null && dbUpdate.equals(rs.getString(1).toString())) {
+                    return null;
+                }
 
-                ResultSet rs = st.executeQuery("select Name from Electric_cars");              //get EVs from db
+                arrayListEv = new ArrayList<>(Arrays.asList(getResources().getString(R.string.other_ev)));
+                arrayListTraditional = new ArrayList<>(Arrays.asList(getResources().getString(R.string.other_car)));
+
+                dbUpdate = rs.getString(1).toString();
+
+                rs = st.executeQuery("select Name from Electric_cars");              //get EVs from db
                 while (rs.next()) {
                     arrayListEv.add(rs.getString(1).toString());
                 }
@@ -461,14 +548,63 @@ public class MainActivity extends AppCompatActivity {
                 rs = st.executeQuery("select diesel from prices");
                 rs.next();
                 prices[2]=rs.getFloat(1);
-
+/*
                 rs = st.executeQuery("select Physical from subsidy");
                 rs.next();
                 subsidy[0]=rs.getInt(1);
 
                 rs = st.executeQuery("select Legal from subsidy");
                 rs.next();
-                subsidy[1]=rs.getInt(1);
+                subsidy[1]=rs.getInt(1);*/
+
+
+
+
+                rs = st.executeQuery("select NAme from Subsidy_t");           //get Fuel_type of fuel_cars from db
+                while (rs.next()) {
+                    subsidyList.add(rs.getString(1).toString());
+                }
+
+                rs = st.executeQuery("select Size from Subsidy_t");                  //get EVs efficiency from db
+                while (rs.next()) {
+                    subsidySize.add(rs.getInt(1));
+                }
+
+                rs = st.executeQuery("select Name from solar_panels order by Power");           //get Fuel_type of fuel_cars from db
+                while (rs.next()) {
+                    solarPanelList.add(rs.getString(1).toString());
+                }
+
+                rs = st.executeQuery("select Power from solar_panels order by Power");                  //get EVs efficiency from db
+                while (rs.next()) {
+                    solarPanleSize.add(rs.getInt(1));
+                }
+                rs = st.executeQuery("select Price from solar_panels order by Power");                  //get EVs efficiency from db
+                while (rs.next()) {
+                    solarPanlePrice.add(rs.getInt(1));
+                }
+
+
+                //Caching data (so no internet access is needed after first use of application)
+                editor.putString("dbUpdate", gson.toJson(dbUpdate));
+                editor.putString("arrayListEv", gson.toJson(arrayListEv));
+                editor.putString("arrayListTraditional", gson.toJson(arrayListTraditional));
+                editor.putString("arrayListEfficiencyTraditional", gson.toJson(arrayListEfficiencyTraditional));
+                editor.putString("arrayListFuelType", gson.toJson(arrayListFuelType));
+                editor.putString("arrayListEfficiencyEv", gson.toJson(arrayListEfficiencyEv));
+                editor.putString("arrayListC02", gson.toJson(arrayListC02));
+                editor.putString("arrayListEvPrice", gson.toJson(arrayListEvPrice));
+                editor.putString("arrayListTraditionalPrice", gson.toJson(arrayListTraditionalPrice));
+                editor.putString("prices", gson.toJson(prices));
+               // editor.putString("subsidy", gson.toJson(subsidy));
+
+                editor.putString("subsidyList", gson.toJson(subsidyList));
+                editor.putString("subsidySize", gson.toJson(subsidySize));
+                editor.putString("solarPanelList", gson.toJson(solarPanelList));
+                editor.putString("solarPanleSize", gson.toJson(solarPanleSize));
+                editor.putString("solarPanlePrice", gson.toJson(solarPanlePrice));
+                editor.apply();
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -477,9 +613,9 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
         protected void onPostExecute(Object result) {
-            if (MainActivity.this.pd != null) {
+            /*if (MainActivity.this.pd != null) {
                 MainActivity.this.pd.dismiss();
-            }
+            }*/
         }
     }
 }

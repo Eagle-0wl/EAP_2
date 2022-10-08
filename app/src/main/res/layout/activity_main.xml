@@ -36,7 +36,6 @@
         app:drawableRightCompat="@drawable/ic_baseline_arrow_drop_down_24" />
 
     <EditText
-
         android:id="@+id/editTextElectricityPrice"
         android:layout_width="170dp"
         android:layout_height="56dp"
@@ -58,19 +57,10 @@
     <TextView
         android:id="@+id/textViewDistancePerMonth"
         android:layout_width="170dp"
-        android:layout_height="32dp"
+        android:layout_height="36dp"
         android:text="@string/distance"
         app:layout_constraintStart_toStartOf="@+id/editTextDistancePerMonth"
         app:layout_constraintTop_toBottomOf="@+id/editTextDistancePerMonth" />
-
-    <CheckBox
-        android:id="@+id/checkBoxBusiness"
-        android:layout_width="90dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/business"
-        app:layout_constraintStart_toStartOf="@+id/editTextDistancePerMonth"
-        app:layout_constraintTop_toTopOf="@+id/textViewDistancePerMonth" />
 
     <EditText
 
@@ -107,12 +97,12 @@
         android:id="@+id/buttonCalculate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
-        android:textColor="@android:color/white"
+        android:layout_marginEnd="4dp"
         android:text="@string/calculate"
+        android:textColor="@android:color/white"
         app:backgroundTint="@color/teal_700"
         app:layout_constraintEnd_toEndOf="@+id/editTextGasPrice"
-        app:layout_constraintTop_toBottomOf="@+id/textViewGasPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubsidy" />
 
     <TextView
         android:id="@+id/textViewPaybackTime"
@@ -229,5 +219,62 @@
         android:text="@string/ev_efficiency"
         app:layout_constraintStart_toStartOf="@+id/editTextEvEfficiency"
         app:layout_constraintTop_toBottomOf="@+id/editTextEvEfficiency" />
+
+    <Spinner
+        android:id="@+id/spinnerSubsidy"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:drawable/editbox_background"
+        android:gravity="center_vertical"
+        android:padding="2dp"
+        app:layout_constraintStart_toStartOf="@+id/textViewDistancePerMonth"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDistancePerMonth" />
+
+    <Spinner
+        android:id="@+id/spinnerSolarPanels"
+        android:layout_width="170dp"
+        android:layout_height="56dp"
+        android:background="@android:drawable/editbox_background"
+        android:padding="2dp"
+        app:layout_constraintStart_toStartOf="@+id/textViewGasPrice"
+        app:layout_constraintTop_toTopOf="@+id/spinnerSubsidy" />
+
+    <TextView
+        android:id="@+id/textViewSubsidy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subsidy"
+        app:layout_constraintStart_toStartOf="@+id/spinnerSubsidy"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSubsidy" />
+
+    <TextView
+        android:id="@+id/textViewSolarPanels"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/solar_panels"
+        app:layout_constraintStart_toStartOf="@+id/spinnerSolarPanels"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSolarPanels" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerSolarPanels"
+        app:layout_constraintTop_toTopOf="@+id/spinnerSolarPanels"
+        app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerSubsidy"
+        app:layout_constraintTop_toTopOf="@+id/spinnerSubsidy"
+        app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
