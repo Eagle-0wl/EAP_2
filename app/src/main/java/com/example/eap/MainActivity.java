@@ -548,24 +548,13 @@ public class MainActivity extends AppCompatActivity {
                 rs = st.executeQuery("select diesel from prices");
                 rs.next();
                 prices[2]=rs.getFloat(1);
-/*
-                rs = st.executeQuery("select Physical from subsidy");
-                rs.next();
-                subsidy[0]=rs.getInt(1);
 
-                rs = st.executeQuery("select Legal from subsidy");
-                rs.next();
-                subsidy[1]=rs.getInt(1);*/
-
-
-
-
-                rs = st.executeQuery("select NAme from Subsidy_t");           //get Fuel_type of fuel_cars from db
+                rs = st.executeQuery("select NAme from Subsidy");           //get Fuel_type of fuel_cars from db
                 while (rs.next()) {
                     subsidyList.add(rs.getString(1).toString());
                 }
 
-                rs = st.executeQuery("select Size from Subsidy_t");                  //get EVs efficiency from db
+                rs = st.executeQuery("select Size from Subsidy");                  //get EVs efficiency from db
                 while (rs.next()) {
                     subsidySize.add(rs.getInt(1));
                 }
