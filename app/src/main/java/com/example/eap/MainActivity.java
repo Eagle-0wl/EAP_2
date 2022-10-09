@@ -40,10 +40,10 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    //private ProgressDialog pd = null;
+    private ProgressDialog pd = null;
     private ImageView splashImageView;
 
-    private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB"; //"jdbc:mysql://192.168.0.178:3306/EAP_DB";
+    private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB";
     private static final String user = "EAP";
     private static final String pass = "-fb1(2zrtSP7/78hP]_-/x@gRP@hvP@u";
 
@@ -497,8 +497,9 @@ public class MainActivity extends AppCompatActivity {
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery("SELECT last_update FROM mysql.innodb_table_stats order by last_update desc limit 1");
                 rs.next();
+
                 dbUpdate = gson.fromJson(sharedPref.getString("dbUpdate", null), String.class);
-                if (dbUpdate == null && dbUpdate.equals(rs.getString(1).toString())) {
+                if (dbUpdate != null && dbUpdate.equals(rs.getString(1).toString())) {
                     return null;
                 }
 
@@ -603,7 +604,6 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("solarPanlePrice", gson.toJson(solarPanlePrice));
                 editor.apply();
 
-
             } catch (Exception e) {
                 e.printStackTrace();
                 error = true;
@@ -611,9 +611,9 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
         protected void onPostExecute(Object result) {
-            /*if (MainActivity.this.pd != null) {
+            if (MainActivity.this.pd != null) {
                 MainActivity.this.pd.dismiss();
-            }*/
+            }
         }
     }
 }
