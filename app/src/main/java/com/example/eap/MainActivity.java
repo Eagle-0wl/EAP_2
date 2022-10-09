@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     //private ProgressDialog pd = null;
     private ImageView splashImageView;
 
-    private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB";
+    private static final String url = "jdbc:mysql://192.168.0.178:3306/EAP_DB"; //"jdbc:mysql://192.168.0.178:3306/EAP_DB";
     private static final String user = "EAP";
     private static final String pass = "-fb1(2zrtSP7/78hP]_-/x@gRP@hvP@u";
 
@@ -94,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
         h.postDelayed(new Runnable() {
             public void run() {
                 if (error == true ){
-                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.error),Toast.LENGTH_LONG).show();
-                    finishAffinity();
-                    System.exit(0);
+                   Toast.makeText(getApplicationContext(),getResources().getString(R.string.error),Toast.LENGTH_LONG).show();
+                   finishAffinity();
+                   System.exit(0);
                 }
                 setContentView(R.layout.activity_main);
                 textViewEvList = findViewById(R.id.textViewEvList);
@@ -321,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
                 TextView textViewPaybackTime = findViewById(R.id.textViewPaybackTime);
                 TextView textViewCalculationDetails = findViewById(R.id.textViewCalculationDetails);
 
-
                 Spinner spinnerSubsidy = (Spinner) findViewById(R.id.spinnerSubsidy);
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, subsidyList);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -411,18 +410,28 @@ public class MainActivity extends AppCompatActivity {
                         int co2 = Integer.valueOf(editTextPollution.getText().toString());
                         float efficiencyTraditional = Float.valueOf(editTextTraditionalCarEfficiency.getText().toString());
                         float fuelPrice = Float.valueOf(editTextFuelPrice.getText().toString());
-                        float resultEv =  electricityPrice * efficiencyEv/1000 * distance;
+                        float resultEv = 0;
                         float resultTraditional = fuelPrice * efficiencyTraditional/100 * distance;
 
 
-                        solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()); //kilovatvalandes
-                        solarPanlePrice.get(spinnerSolarPanels.getSelectedItemPosition()); //saules elektriniu kaina.
+                        //solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()); //kilovatvalandes
+                        //solarPanlePrice.get(spinnerSolarPanels.getSelectedItemPosition()); //saules elektriniu kaina.
+                        float electricityNeeded;
+                        float extraElectricity = 0;
+                        electricityNeeded = 100.0F - ((96.3F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition())) * 100 ) / ( distance * efficiencyEv /1000) ;
 
-                        if (electricityPrice * efficiencyEv/1000 >= fuelPrice * efficiencyTraditional/100){
+                        if (electricityPrice * efficiencyEv/1000 >= fuelPrice * efficiencyTraditional/100 && electricityNeeded >0 ){
                             textViewPaybackTime.setText(getString(R.string.will_not_pay_back));
                             textViewCalculationDetails.setText(null);
                             return;
                         }
+
+                        if (electricityNeeded < 0){
+                            extraElectricity = 83.3F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) - distance * efficiencyEv /1000.0F;
+                            electricityNeeded = 0;
+                        }
+
+                        resultEv =  electricityPrice * efficiencyEv/1000 * distance * electricityNeeded / 100;
 
                         while (currentCO2<co2){
                             co2 = co2 - 10;
@@ -431,13 +440,13 @@ public class MainActivity extends AppCompatActivity {
                         if (isDiesel==false){
                             tax = tax / 2;
                         }
-                        boolean isChecked = false;//((CheckBox) findViewById(R.id.checkBoxBusiness)).isChecked();
+                        //boolean isChecked = false;//((CheckBox) findViewById(R.id.checkBoxBusiness)).isChecked();
 
-                        while(evPrice - tradicionalPrice - subsidySize.get(spinnerSubsidy.getSelectedItemPosition()) - tax - (resultTraditional - resultEv )* i > 0)
+                        while(evPrice +  solarPanlePrice.get(spinnerSolarPanels.getSelectedItemPosition()) - tradicionalPrice - subsidySize.get(spinnerSubsidy.getSelectedItemPosition()) - tax - (resultTraditional - resultEv )* i > 0)
                             {
                                 i++;
                             }
-                            textViewCalculationDetails.setText(getString(R.string.calculation_detail,  subsidySize.get(spinnerSubsidy.getSelectedItemPosition()),tax,resultTraditional - resultEv));
+                            textViewCalculationDetails.setText(getString(R.string.calculation_detail, subsidySize.get(spinnerSubsidy.getSelectedItemPosition()),tax,resultTraditional - resultEv, extraElectricity));
                         textViewPaybackTime.setText(getString(R.string.will_pay_back_in,i/12,i%12));
                     }
                 });
