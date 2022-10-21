@@ -398,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
 
                         float electricityNeeded;
                         float extraElectricity = 0;
-                        electricityNeeded = 100.0F - (83.3F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) * 100 ) / ( distance * efficiencyEv /1000) ;
+                        electricityNeeded = 100.0F - (85.5F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) * 100 ) / ( distance * efficiencyEv /1000) ;
 
                         if (electricityPrice * efficiencyEv/1000 >= fuelPrice * efficiencyTraditional/100 && electricityNeeded >0 ){
                             textViewPaybackTime.setText(getString(R.string.will_not_pay_back));
@@ -407,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         if (electricityNeeded < 0.0F){
-                            extraElectricity = 83.3F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) - distance * efficiencyEv /1000;
+                            extraElectricity = 85.5F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) - distance * efficiencyEv /1000;
                             electricityNeeded = 0;
                         }
 
@@ -420,7 +420,6 @@ public class MainActivity extends AppCompatActivity {
                         if (isDiesel==false){
                             tax = tax / 2;
                         }
-                        //boolean isChecked = false;//((CheckBox) findViewById(R.id.checkBoxBusiness)).isChecked();
 
                         while(evPrice +  solarPanlePrice.get(spinnerSolarPanels.getSelectedItemPosition()) - tradicionalPrice - subsidySize.get(spinnerSubsidy.getSelectedItemPosition()) - tax - (resultTraditional - resultEv )* i > 0)
                             {
@@ -551,6 +550,9 @@ public class MainActivity extends AppCompatActivity {
                 while (rs.next()) {
                     solarPanlePrice.add(rs.getInt(1));
                 }
+                //clears old data
+                editor.clear();
+                editor.apply();
                 //Caching data (so no internet access is needed after first use of application)
                 editor.putString("dbUpdate", gson.toJson(dbUpdate));
                 editor.putString("arrayListEv", gson.toJson(arrayListEv));

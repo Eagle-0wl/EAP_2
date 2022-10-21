@@ -97,12 +97,13 @@
         android:id="@+id/buttonCalculate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="4dp"
         android:text="@string/calculate"
         android:textColor="@android:color/white"
         app:backgroundTint="@color/teal_700"
         app:layout_constraintEnd_toEndOf="@+id/editTextGasPrice"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSubsidy" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSolarPanels" />
 
     <TextView
         android:id="@+id/textViewPaybackTime"
@@ -224,12 +225,12 @@
         android:id="@+id/spinnerSubsidy"
         android:layout_width="170dp"
         android:layout_height="56dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="336dp"
         android:background="@android:drawable/editbox_background"
         android:gravity="center_vertical"
         android:padding="2dp"
         app:layout_constraintStart_toStartOf="@+id/textViewDistancePerMonth"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDistancePerMonth" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewEvList" />
 
     <Spinner
         android:id="@+id/spinnerSolarPanels"
