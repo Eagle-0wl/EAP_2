@@ -398,6 +398,7 @@ public class MainActivity extends AppCompatActivity {
 
                         float electricityNeeded;
                         float extraElectricity = 0;
+                        //kiek papildomai elektros reikia pirkti iš elektros tinklų
                         electricityNeeded = 100.0F - (85.5F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) * 100 ) / ( distance * efficiencyEv /1000) ;
 
                         if (electricityPrice * efficiencyEv/1000 >= fuelPrice * efficiencyTraditional/100 && electricityNeeded >0 ){
@@ -405,12 +406,12 @@ public class MainActivity extends AppCompatActivity {
                             textViewCalculationDetails.setText(null);
                             return;
                         }
-
+                        //jeigu papildomai elektros pirkti nereikia tuomet paskaičiuojamas papildomai pagaminamos elektros kiekis.
                         if (electricityNeeded < 0.0F){
                             extraElectricity = 85.5F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) - distance * efficiencyEv /1000;
                             electricityNeeded = 0;
                         }
-
+                        //
                         resultEv =  electricityPrice * efficiencyEv/1000 * distance * electricityNeeded / 100;
 
                         while (currentCO2<co2){
@@ -526,6 +527,12 @@ public class MainActivity extends AppCompatActivity {
                 rs = st.executeQuery("select diesel from prices");
                 rs.next();
                 prices[2]=rs.getFloat(1);
+
+                subsidyList.clear();
+                subsidySize.clear();
+                solarPanelList.clear();
+                solarPanleSize.clear();
+                solarPanlePrice.clear();
 
                 rs = st.executeQuery("select NAme from Subsidy");           //get Fuel_type of fuel_cars from db
                 while (rs.next()) {
