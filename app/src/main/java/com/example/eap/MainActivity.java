@@ -399,8 +399,7 @@ public class MainActivity extends AppCompatActivity {
                         float electricityNeeded;
                         float extraElectricity = 0;
                         //kiek papildomai elektros reikia pirkti iš elektros tinklų
-                        electricityNeeded = 100.0F - (85.5F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) * 100 ) / ( distance * efficiencyEv /1000) ;
-
+                        electricityNeeded = 100.0F - (85.5F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) * 100 ) / ( distance * efficiencyEv /1000) * 0.67F;
                         if (electricityPrice * efficiencyEv/1000 >= fuelPrice * efficiencyTraditional/100 && electricityNeeded >0 ){
                             textViewPaybackTime.setText(getString(R.string.will_not_pay_back));
                             textViewCalculationDetails.setText(null);
@@ -408,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         //jeigu papildomai elektros pirkti nereikia tuomet paskaičiuojamas papildomai pagaminamos elektros kiekis.
                         if (electricityNeeded < 0.0F){
-                            extraElectricity = 85.5F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) - distance * efficiencyEv /1000;
+                            extraElectricity = (85.5F * solarPanleSize.get(spinnerSolarPanels.getSelectedItemPosition()) - distance * efficiencyEv /1000) * 0.67F;
                             electricityNeeded = 0;
                         }
                         //
